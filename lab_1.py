@@ -59,7 +59,7 @@ second func
    b) [-1., -0.5]
    c) [0.5, 1.]
 """
-f = 2*pow(x, 5) - 5*pow(x, 4) + 15*pow(x, 2) - 7
+f = 2.*pow(x, 5) - 5.*pow(x, 4) + 15.*pow(x, 2) - 7
 
 res = bisection(-1.5, -1., e, f_A, f_B, f_X, X, f)
 print(res[0])
@@ -87,13 +87,26 @@ X_0 = []
 phi_ = phi.diff(x)
 
 
-def msi(x_0, X_0, X_1, x_1, phi, e):
+def msi(x_0, X_0, X_1, phi, e):
     i = 1
-    if abs(phi_.subs(x, x_0)) < 1.:
+    x_1=phi.diff(x).subs(x, x_0)
+    if abs(x_1) < 1.:
+        print("s")
         while abs(x_0 - x_1) > e:
             i += 1
             X_1.append(x_1)
             X_0.append(x_0)
             x_0 = x_1
             x_1 = phi.subs(x, x_1)
+    return x_0, X_0, X_1
 
+"""
+second func
+"""
+phi = sqrt((-2.*pow(x, 5) + 5.*pow(x, 4) + 7.)/15.)
+res = msi(-0.5, X_0, X_1, phi, e)
+print(res[0])
+phi = pow((2.*pow(x, 5) + 15.*pow(x, 2) - 7)/5, 1/4)
+
+res = msi(0.3, X_0, X_1, phi, e)
+print(res[0])
