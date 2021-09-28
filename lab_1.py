@@ -60,7 +60,7 @@ second func
    c) [0.5, 1.]
 """
 f = 2.*pow(x, 5) - 5.*pow(x, 4) + 15.*pow(x, 2) - 7
-
+print()
 res = bisection(-1.5, -1., e, f_A, f_B, f_X, X, f)
 print(res[0])
 res = bisection(-1., -0.5, e, f_A, f_B, f_X, X, f)
@@ -89,9 +89,8 @@ phi_ = phi.diff(x)
 
 def msi(x_0, X_0, X_1, phi, e):
     i = 1
-    x_1=phi.diff(x).subs(x, x_0)
+    x_1 = phi.diff(x).subs(x, x_0)
     if abs(x_1) < 1.:
-        print("s")
         while abs(x_0 - x_1) > e:
             i += 1
             X_1.append(x_1)
@@ -104,9 +103,93 @@ def msi(x_0, X_0, X_1, phi, e):
 second func
 """
 phi = sqrt((-2.*pow(x, 5) + 5.*pow(x, 4) + 7.)/15.)
+X_1 = []
+X_0 = []
 res = msi(-0.5, X_0, X_1, phi, e)
+print()
 print(res[0])
-phi = pow((2.*pow(x, 5) + 15.*pow(x, 2) - 7)/5, 1/4)
+phi = pow((2.*pow(x, 5) + 15.*pow(x, 2) - 7.)/5., 1/4)
+X_1 = []
+X_0 = []
+# res = msi(0.5, X_0, X_1, phi, e)
+# print(res[0])  # bullshit
 
-res = msi(0.3, X_0, X_1, phi, e)
-print(res[0])
+phi = pow((5.*pow(x, 4) - 15.*pow(x, 2) + 7.)/2., 1/5)
+X_1 = []
+X_0 = []
+# res = msi(-1.45, X_0, X_1, phi, e)
+# print(res[0])   # bullshit
+
+
+"""
+Newton's method
+"""
+
+
+f = 2.*pow(x, 5) - 5.*pow(x, 4) + 15.*pow(x, 2) - 7
+f_ = f.diff(x)
+f__ = f_.diff(x)
+print()
+# print(f.subs(x, -1.))
+# print(f__.subs(x, -1.))
+x_0 = -1.2
+x_1 = x_0 - f/f_
+X_0 = []
+F = []
+F_ = []
+
+
+def newton(x_1, x_0, f, f_, X_0, F, F_):
+    while abs(x_1.subs(x, x_0) - x_0) > e:
+        X_0.append(x_0)
+        F.append(f.subs(x, x_0))
+        F_.append(f_.subs(x, x_0))
+        x_0 = x_1.subs(x, x_0)
+        x_1 = x_0 - f / f_
+    return x_0, X_0, F, F_
+
+
+def mod_newton(x_1, x_0, f, f_, X_0, F, F_):
+    x_tmp = x_0
+    flag = True
+    while abs(x_1.subs(x, x_0) - x_0) > e:
+        if abs(x_1.subs(x, x_0) - x_0) < e + 0.006:
+            flag = False
+        X_0.append(x_0)
+        F.append(f.subs(x, x_0))
+        F_.append(f_.subs(x, x_0))
+        print(F_)
+        x_0 = x_1.subs(x, x_0)
+        if flag:
+            x_1 = x_0 - f / f_
+        else:
+            x_1 = x_0 - f / f_.subs(x, x_tmp)
+    return x_0, X_0, F, F_
+
+
+print(f.subs(x, -1.2)*f__.subs(x, -1.))
+print(newton(x_1, x_0, f, f_, X_0, F, F_)[0])
+print("Modified: ", mod_newton(x_1, x_0, f, f_, X_0, F, F_)[0])
+
+
+print(f.subs(x, -0.7)*f__.subs(x, -1.))
+x_0=-0.7
+x_1 = x_0 - f/f_
+X_0 = []
+F = []
+F_ = []
+print(newton(x_1, x_0, f, f_, X_0, F, F_)[0])
+print("Modified: ", mod_newton(x_1, x_0, f, f_, X_0, F, F_)[0])
+
+print(f.subs(x, 0.5)*f__.subs(x, -1.))
+x_0=0.5
+x_1 = x_0 - f/f_
+X_0 = []
+F = []
+F_ = []
+print(newton(x_1, x_0, f, f_, X_0, F, F_)[0])
+print("Modified: ", mod_newton(x_1, x_0, f, f_, X_0, F, F_)[0])
+
+
+# def secant()
+
