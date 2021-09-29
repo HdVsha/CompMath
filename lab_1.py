@@ -191,5 +191,17 @@ print(newton(x_1, x_0, f, f_, X_0, F, F_)[0])
 print("Modified: ", mod_newton(x_1, x_0, f, f_, X_0, F, F_)[0])
 
 
-# def secant()
-
+def secant(a, b, f, e, max) -> Float:
+    """
+    return: root of f(x) = 0
+    """
+    i = 0
+    while abs(a - b) >= e and i < max:
+        a = b - (b - a) * f.subs(x, b) / (f.subs(x, b) - f.subs(x, a))
+        b = a - (a - b) * f.subs(x, a) / (f.subs(x, a) - f.subs(x, b))
+        i = i + 1
+    return b
+print()
+print(secant(-1.5, -1., f, e, 100))
+print(secant(-1., -0.5, f, e, 100))
+print(secant(0.5, 1., f, e, 100))
