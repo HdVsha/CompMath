@@ -160,15 +160,13 @@ def mod_newton(x_1, x_0, f, f_):
 
 print(f"F(x0)*F''(x0) = {f.subs(x, 0.3)*f__.subs(x, 0.3)}")
 print()
-# print(mod_newton(x_1, x_0, f, f_))
-x_ = newton(x_1, x_0, f, f_)
-print(f"Конечный результат = {x_}")
-print(f"Абсолютная погрешность: {func(0.567143, x_)[1]}")
-print(f"Относительная погрешность: {func(0.567143, x_)[0]}")
+x_1 = x_0 - f/f_
+# print(newton(x_1, x_0, f, f_))
+# x_ = mod_newton(x_1, x_0, f, f_)
 
 # print(f"F(x0)*F''(x0) = {f.subs(x, -0.7)*f__.subs(x, -0.7)}")
 x_0=-0.7
-x_1 = x_0 - f/f_
+
 
 # print(newton(x_1, x_0, f, f_))
 # print(mod_newton(x_1, x_0, f, f_))
@@ -186,14 +184,17 @@ def secant(a, b, f, e, max) -> Float:
     """
     i = 0
     while abs(a - b) >= e and i < max:
-        a = b - (b - a) * f.subs(x, b) / (f.subs(x, b) - f.subs(x, a))
-        b = a - (a - b) * f.subs(x, a) / (f.subs(x, a) - f.subs(x, b))
         i = i + 1
         if i ==1:
             print("Iteration", "|", "a", "|", "b", "|", "f(a)", "|", "f(b)")
         print(f"{i}",f"|", f"{a}", "|", f"{b}", "|", f"{f.subs(x, a)}", "|", f"{f.subs(x, b)}" )
+        a = b - (b - a) * f.subs(x, b) / (f.subs(x, b) - f.subs(x, a))
+        b = a - (a - b) * f.subs(x, a) / (f.subs(x, a) - f.subs(x, b))
     return b
 # print()
 # print("[-1.5, -1] ", secant(-1.5, -1., f, e, 100))
 # print("[-1, -0.5] ",secant(-1., -0.5, f, e, 100))
-# print("[0.5, 1] ",secant(0.5, 1., f, e, 100))
+x_ = secant(0.2, 1., f, e, 100)
+print(f"Конечный результат = {x_}")
+print(f"Абсолютная погрешность: {func(0.567143, x_)[1]}")
+print(f"Относительная погрешность: {func(0.567143, x_)[0]}")
